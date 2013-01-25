@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Author:  Alexander Hansen
+# Initial release: 25 Jan, 2013.
+# This script is available in the public domain.
+
+# This script is intended to go in a system-wide location which is sourced
+# at shell startup, such as a profile.d directory.
+
+export PATH=`@PREFIX@/bin/fixpath.pl`
+export MANPATH=`@PREFIX@/bin/fixpath.pl --manpath`

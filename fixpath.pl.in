@@ -1,0 +1,70 @@
+#!/usr/bin/env perl -w
+
+# -*- mode: Perl; tab-width: 4; -*-
+
+# Author:  Alexander Hansen
+# Initial release: 25 Jan, 2013.
+# This script is available in the public domain.
+
+# A quick script to tweak the PATH and MANPATH environment
+# variables.  The initial motivation was to make sure that
+# these are the same in X11 and non-X11 terminal sessions
+# on OS X 10.8.
+# We read in the PATH and MANPATH environment variables and
+# 1) Strip out duplicate entries.
+# 2) Delete entries matching pattern given in instances
+#    (Zero or more) of the --delete flag.
+# 3) Put the entries in the following order:
+#	 A.	Package manager, e.g. Fink.
+#    B. System and user-defined
+#    C. (MANPATH only) Perl MANPATH directories.
+#	 This order is geared for Fink.
+# 4) Print the results to standard output in the standard
+#    PATH format. 
+
+use strict;
+use List::MoreUtils qw { uniq };
+use Getopt::Long;
+
+my @delete_vals;
+my ($manpath,$help);
+my $result=GetOptions (	
+						"manpath" => \$manpath,
+						"delete=s" => \@delete_vals,
+						"help" => \$help,
+					  );
+
+if ($help or !$result) {
+	print "Usage:\n\n";
+	print "fixpath.pl [--help] [--manpath] [--delete=PATTERN1] [--delete=PATTERN2] ...\n\n";
+	print "Reorders the PATH or MANPATH to conform to Fink standards:\n\n";
+	print "<Fink paths>:<system and user paths>:<Fink Perl man paths>\n\n";
+	print "We also remove duplicate entries.\n\n";
+	print "Options:\n\n";
+	print "--help\t\tDisplay this text\n";
+	print "--manpath\toperate on MANPATH rather than PATH\n";
+	print "--delete\t(Optional) Zero or more patterns to exclude.\n";
+	exit 1;
+}
+
+my (@mgrpath, @mgr_perl_path, @userpath, @generalpath);
+
+my @path_entries;
+if ($manpath) { 
+	@path_entries = uniq (split /:/, $ENV{"MANPATH"});
+} else  {
+	@path_entries = uniq (split /:/, $ENV{"PATH"});
+}
+ENTRY: foreach my $entry (@path_entries) {
+	foreach (@delete_vals) { 
+		next ENTRY if $entry =~ /$_/;
+	}
+	if ($entry =~ m|^@PREFIX@/lib|) { 
+		push @mgr_perl_path, ($entry);
+	} elsif ($entry =~ m|^@PREFIX@|) { 
+		push @mgrpath, ($entry);
+	} else { 
+		push @generalpath, ($entry);
+	}
+}
+print join(':', , @userpath, @mgrpath, @generalpath, @mgr_perl_path),"\n";
