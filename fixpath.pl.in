@@ -17,8 +17,6 @@
 # 3) Put the entries in the following order:
 #	 A.	Package manager, e.g. Fink.
 #    B. System and user-defined
-#    C. (MANPATH only) Perl MANPATH directories.
-#	 This order is geared for Fink.
 # 4) Print the results to standard output in the standard
 #    PATH format. 
 
@@ -37,17 +35,23 @@ my $result=GetOptions (
 if ($help or !$result) {
 	print "Usage:\n\n";
 	print "fixpath.pl [--help] [--manpath] [--delete=PATTERN1] [--delete=PATTERN2] ...\n\n";
-	print "Reorders the PATH or MANPATH to conform to Fink standards:\n\n";
-	print "<Fink paths>:<system and user paths>:<Fink Perl man paths>\n\n";
-	print "We also remove duplicate entries.\n\n";
+	print "Reorders the PATH or MANPATH to make sure that Fink's are in the front:\n\n";
+	print "<Fink paths>:<system and user paths>\n\n";
+	print "We also remove duplicate entries, and other entries can be removed via\n";
+	print "the --delete flag\n\n";
 	print "Options:\n\n";
 	print "--help\t\tDisplay this text\n";
 	print "--manpath\toperate on MANPATH rather than PATH\n";
-	print "--delete\t(Optional) Zero or more patterns to exclude.\n";
+	print "--delete\t(Optional) Zero or more patterns to exclude.\n\n";
+	print "Example:\n\n";
+	print '$ printenv PATH',"\n";
+	print "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/sw/bin:/sw/sbin:/sw/lib/perl5/ExtUtils:/Users/hansen/bin:/Users/hansen/bin:/opt/X11/bin\n\n";
+	print '$ fixpath.pl'," --delete=local\n";
+	print "/sw/bin:/sw/sbin:/sw/lib/perl5/ExtUtils:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/hansen/bin\n";
 	exit 1;
 }
 
-my (@mgrpath, @mgr_perl_path, @userpath, @generalpath);
+my (@mgrpath,  @generalpath);
 
 my @path_entries;
 if ($manpath) { 
@@ -59,12 +63,10 @@ ENTRY: foreach my $entry (@path_entries) {
 	foreach (@delete_vals) { 
 		next ENTRY if $entry =~ /$_/;
 	}
-	if ($entry =~ m|^@PREFIX@/lib|) { 
-		push @mgr_perl_path, ($entry);
-	} elsif ($entry =~ m|^@PREFIX@|) { 
+	if ($entry =~ m|^@PREFIX@|) { 
 		push @mgrpath, ($entry);
 	} else { 
 		push @generalpath, ($entry);
 	}
 }
-print join(':', , @userpath, @mgrpath, @generalpath, @mgr_perl_path),"\n";
+print join(':', @mgrpath, @generalpath),"\n";
