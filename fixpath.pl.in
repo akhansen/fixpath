@@ -45,9 +45,9 @@ if ($help or !$result) {
 	print "--delete\t(Optional) Zero or more patterns to exclude.\n\n";
 	print "Example:\n\n";
 	print '$ printenv PATH',"\n";
-	print "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/sw/bin:/sw/sbin:/sw/lib/perl5/ExtUtils:/Users/hansen/bin:/Users/hansen/bin:/opt/X11/bin\n\n";
+	print "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:@PREFIX@/bin:@PREFIX@/sbin:@PREFIX@/lib/perl5/ExtUtils:/Users/hansen/bin:/Users/hansen/bin:/opt/X11/bin\n\n";
 	print '$ fixpath.pl'," --delete=local\n";
-	print "/sw/bin:/sw/sbin:/sw/lib/perl5/ExtUtils:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/hansen/bin\n";
+	print "@PREFIX@/bin:@PREFIX@/sbin:@PREFIX@/lib/perl5/ExtUtils:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/hansen/bin\n";
 	exit 1;
 }
 
