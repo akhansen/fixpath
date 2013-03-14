@@ -31,16 +31,20 @@
         <hr>
 
         <section id="main_content">
-          <h3>Motivation.</h3>
+          <h2>Motivation.</h2>
 
 <p><strong>fixpath</strong> is a set of scripts to fix the order and remove repeated and unwanted entries
 in the <em>PATH</em> or <em>MANPATH</em>.  It was originally intended to deal with issues in X11 terminals on Mac OS 10.8 for <a href="http://www.finkproject.org" title="Fink">Fink</a>,  but could easily be adapted for other scenarios.</p>
+
+<h3>OS X "native" terminal</h3>
 
 <pre><code>$ printenv PATH
 /sw/lib/perl5/ExtUtils:/sw/bin:/sw/sbin:
 /usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:
 /opt/X11/bin:/Users/hansen/bin
 </code></pre>
+
+<h3>X11 terminal</h3>
 
 <pre><code>$ printenv PATH
 /usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:
