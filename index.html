@@ -36,6 +36,8 @@
 <p><strong>fixpath</strong> is a set of scripts to fix the order and remove repeated and unwanted entries
 in the <em>PATH</em> or <em>MANPATH</em>.  It was originally intended to deal with issues in X11 terminals on Mac OS 10.8 for <a href="http://www.finkproject.org" title="Fink">Fink</a>,  but could easily be adapted for other scenarios.</p>
 
+<p>To illustrate this, here are what the <em>PATH</em> environment variable shows up as on my Mountain Lion system.</p>
+
 <h3>OS X "native" terminal</h3>
 
 <pre><code>$ printenv PATH
@@ -51,7 +53,7 @@ in the <em>PATH</em> or <em>MANPATH</em>.  It was originally intended to deal wi
 /sw/lib/perl5/ExtUtils:/sw/bin:/sw/sbin:/Users/hansen/bin
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>For the sake of consistency, I'd prefer to have the same <em>PATH</em> regardless of what terminal I'm using, and so I created the <strong>fixpath</strong> tool.</p>
 
 <h3>Designer Templates</h3>
 
