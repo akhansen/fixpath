@@ -10,7 +10,7 @@ This package is released into the public domain.
 
 Author: Alexander Hansen
 
-2013-01-23:	Initial release
+2013-11-03: Doesn't get along with Fink's perls, so make sure to use the system's.  
+			1.1.0 release.
 
-
-
+2013-01-23:	Initial 1.0.0 release 
